@@ -18,13 +18,23 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Cairo:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <script>
       document.documentElement.classList.add("js");
     </script>
 
+    <script>
+      try {
+        var d = document.documentElement,
+          t = localStorage.getItem("theme"),
+          l = localStorage.getItem("lang");
+        if (!t) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        d.setAttribute("data-theme", t);
+        if (l === "ar") { d.lang = "ar"; d.dir = "rtl"; }
+      } catch (e) {}
+    </script>
     <style>
       * {
         margin: 0;
@@ -37,12 +47,43 @@
       }
 
       :root {
+        color-scheme: dark;
         --accent: #00ffcc;
         --accent-soft: rgba(0, 255, 204, 0.12);
+        --accent-line: rgba(0, 255, 204, 0.25);
+        --accent-glow: rgba(0, 255, 204, 0.1);
+        --accent-shadow: rgba(0, 255, 204, 0.3);
+        --bg-glow: rgba(0, 255, 204, 0.08);
+        --on-accent: #000;
         --bg: #050505;
+        --text: #ffffff;
+        --soft: #bbbbbb;
+        --dim: #888888;
         --glass: rgba(255, 255, 255, 0.03);
+        --glass-hover: rgba(255, 255, 255, 0.06);
         --border: rgba(255, 255, 255, 0.1);
+        --aside-bg: rgba(10, 10, 10, 0.85);
         --muted: #8a8a8a;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --accent: #007a62;
+        --accent-soft: rgba(0, 122, 98, 0.1);
+        --accent-line: rgba(0, 122, 98, 0.3);
+        --accent-glow: rgba(0, 122, 98, 0.1);
+        --accent-shadow: rgba(0, 122, 98, 0.3);
+        --bg-glow: rgba(0, 122, 98, 0.1);
+        --on-accent: #ffffff;
+        --bg: #f5f6f4;
+        --text: #111111;
+        --soft: #3f3f3f;
+        --dim: #62625f;
+        --glass: rgba(0, 0, 0, 0.03);
+        --glass-hover: rgba(0, 0, 0, 0.06);
+        --border: rgba(0, 0, 0, 0.13);
+        --aside-bg: rgba(255, 255, 255, 0.85);
+        --muted: #5c5c5c;
       }
 
       body {
@@ -50,11 +91,11 @@
         background-color: var(--bg);
         background-image: radial-gradient(
           circle at 85% -10%,
-          rgba(0, 255, 204, 0.08),
+          var(--bg-glow),
           transparent 45%
         );
         background-attachment: fixed;
-        color: white;
+        color: var(--text);
         display: flex;
         min-height: 100vh;
         overflow-x: hidden;
@@ -74,7 +115,7 @@
         position: fixed;
         left: 0;
         top: 0;
-        background: rgba(10, 10, 10, 0.85);
+        background: var(--aside-bg);
         backdrop-filter: blur(12px);
         border-right: 1px solid var(--border);
         display: flex;
@@ -133,7 +174,7 @@
 
       .info {
         width: 100%;
-        color: #777;
+        color: var(--dim);
         font-size: 0.9rem;
         margin-bottom: 20px;
         display: grid;
@@ -151,7 +192,7 @@
       }
 
       .info a:hover {
-        color: white;
+        color: var(--text);
       }
 
       .btn {
@@ -166,7 +207,7 @@
         font-weight: 500;
         text-decoration: none;
         border: 1px solid var(--border);
-        color: white;
+        color: var(--text);
         background: var(--glass);
         transition: 0.3s;
         cursor: pointer;
@@ -179,13 +220,13 @@
 
       .btn-primary {
         background: var(--accent);
-        color: #000;
+        color: var(--on-accent);
         border-color: var(--accent);
         font-weight: 700;
       }
 
       .btn-primary:hover {
-        box-shadow: 0 8px 30px rgba(0, 255, 204, 0.3);
+        box-shadow: 0 8px 30px var(--accent-shadow);
       }
 
       aside .btn {
@@ -209,7 +250,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: var(--text);
         text-decoration: none;
         border-radius: 12px;
         font-size: 1.2rem;
@@ -218,7 +259,7 @@
 
       .social-sidebar a:hover {
         background: var(--accent);
-        color: black;
+        color: var(--on-accent);
         transform: translateY(-3px);
       }
 
@@ -263,7 +304,7 @@
 
       .hero-text h1 span {
         color: transparent;
-        -webkit-text-stroke: 1px white;
+        -webkit-text-stroke: 1px var(--text);
       }
 
       .hero-sub {
@@ -307,7 +348,7 @@
       }
 
       a.project-card:hover {
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--glass-hover);
         border-color: var(--accent);
         transform: translateY(-6px);
       }
@@ -328,11 +369,11 @@
         font-size: 1.3rem;
         color: var(--accent);
         background: var(--accent-soft);
-        border: 1px solid rgba(0, 255, 204, 0.25);
+        border: 1px solid var(--accent-line);
       }
 
       .card-arrow {
-        color: #666;
+        color: var(--dim);
         font-size: 0.95rem;
         transition: 0.3s;
       }
@@ -348,7 +389,7 @@
       }
 
       .project-card p {
-        color: #aaa;
+        color: var(--soft);
         margin-bottom: 22px;
         flex: 1;
       }
@@ -360,7 +401,7 @@
         border: 1px solid var(--border);
         border-radius: 20px;
         margin: 0 5px 5px 0;
-        color: #999;
+        color: var(--dim);
       }
 
       .more-link {
@@ -383,14 +424,14 @@
 
       /* --- About / Skills --- */
       .about-text {
-        color: #bbb;
+        color: var(--soft);
         font-size: 1.1rem;
         max-width: 760px;
         margin-top: 10px;
       }
 
       .about-text strong {
-        color: white;
+        color: var(--text);
         font-weight: 500;
       }
 
@@ -423,7 +464,7 @@
       }
 
       .skill-card .tag {
-        color: #ccc;
+        color: var(--soft);
         font-size: 0.78rem;
       }
 
@@ -461,7 +502,7 @@
         background:
           radial-gradient(
             circle at 50% 0%,
-            rgba(0, 255, 204, 0.1),
+            var(--accent-glow),
             transparent 60%
           ),
           var(--glass);
@@ -479,7 +520,7 @@
         margin-top: 100px;
         padding-top: 24px;
         border-top: 1px solid var(--border);
-        color: #555;
+        color: var(--dim);
         font-size: 0.85rem;
         display: flex;
         justify-content: space-between;
@@ -544,10 +585,99 @@
           flex-direction: column;
         }
       }
+    
+
+      /* --- Theme + language controls --- */
+      .controls { display: flex; gap: 10px; width: 100%; margin-bottom: 24px; }
+      .ctrl {
+        flex: 1; height: 42px; display: inline-flex; align-items: center;
+        justify-content: center; gap: 8px; border-radius: 12px;
+        border: 1px solid var(--border); background: var(--glass);
+        color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer;
+        transition: 0.3s;
+      }
+      .ctrl:hover { border-color: var(--accent); }
+
+      /* --- Arabic / RTL --- */
+      [lang="ar"] body { font-family: "Cairo", "Space Grotesk", sans-serif; }
+      [lang="ar"] * { letter-spacing: 0 !important; }
+      [lang="ar"] .eyebrow, [lang="ar"] .status { text-transform: none; }
+      [dir="rtl"] aside { left: auto; right: 0; border-right: none; border-left: 1px solid var(--border); }
+      [dir="rtl"] main { margin-left: 0; margin-right: 350px; }
+      [dir="rtl"] .more-link i, [dir="rtl"] .card-arrow { transform: scaleX(-1); }
+      [dir="rtl"] .more-link:hover i { transform: scaleX(-1) translateX(4px); }
+      [dir="rtl"] a.project-card:hover .card-arrow { transform: scaleX(-1) translate(3px, -3px); }
+      [dir="rtl"] .info a { direction: ltr; display: inline-block; }
+      @media (max-width: 1000px) {
+        [dir="rtl"] aside { right: auto; border-left: none; border-bottom: 1px solid var(--border); }
+        [dir="rtl"] main { margin-right: 0; }
+      }
+
+      /* --- Visual polish --- */
+      body::before {
+        content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+        background-image: radial-gradient(var(--border) 1px, transparent 1px);
+        background-size: 28px 28px;
+        -webkit-mask-image: radial-gradient(ellipse at 75% 0%, #000, transparent 70%);
+        mask-image: radial-gradient(ellipse at 75% 0%, #000, transparent 70%);
+      }
+      main { position: relative; z-index: 1; }
+
+      .progress {
+        position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 300;
+        background: var(--accent); transform: scaleX(0); transform-origin: 0 50%;
+      }
+      [dir="rtl"] .progress { transform-origin: 100% 50%; }
+
+      .pill {
+        display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px;
+        padding: 7px 16px; border-radius: 999px; font-size: 0.8rem;
+        color: var(--soft); background: var(--glass); border: 1px solid var(--border);
+      }
+      .pill .dot {
+        width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+        box-shadow: 0 0 0 0 var(--accent-shadow); animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        70% { box-shadow: 0 0 0 9px transparent; }
+        100% { box-shadow: 0 0 0 0 transparent; }
+      }
+
+      .hero-text h1 span { transition: color 0.4s ease; cursor: default; }
+      .hero-text h1:hover span { color: var(--accent); -webkit-text-stroke-color: var(--accent); }
+
+      .eyebrow::before {
+        content: ""; display: inline-block; width: 26px; height: 1px;
+        background: var(--accent); vertical-align: middle; margin-inline-end: 12px;
+      }
+
+      .photo-wrap { box-shadow: 0 24px 60px -24px var(--accent-shadow); }
+
+      a.project-card, .skill-card { position: relative; overflow: hidden; }
+      a.project-card::before, .skill-card::before {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        opacity: 0; transition: opacity 0.3s ease;
+        background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--accent-glow), transparent 70%);
+      }
+      a.project-card:hover::before, .skill-card:hover::before { opacity: 1; }
+      .tag { transition: 0.3s; }
+      .skill-card .tag:hover, a.project-card:hover .tag { border-color: var(--accent-line); color: var(--text); }
+
+      @media (hover: none) {
+        a.project-card::before, .skill-card::before { display: none; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .pill .dot { animation: none; }
+      }
     </style>
   </head>
   <body>
+    <div class="progress" id="progress" aria-hidden="true"></div>
     <aside>
+      <div class="controls">
+        <button class="ctrl" id="themeBtn" type="button"><i class="fas fa-sun" id="themeIcon"></i><span id="themeLabel">Light</span></button>
+        <button class="ctrl" id="langBtn" type="button">عربي</button>
+      </div>
       <div class="profile-box">
         <div class="photo-wrap">
           <img
@@ -623,6 +753,7 @@
 
     <main>
       <header class="hero-text reveal">
+        <p class="pill"><span class="dot"></span> Open to work</p>
         <p class="eyebrow">Portfolio 2026</p>
         <h1>FRONT-END<br /><span>DEVELOPER</span></h1>
         <p class="hero-sub">&amp; WordPress Specialist</p>
@@ -646,7 +777,7 @@
         <h2 class="section-title">Projects</h2>
         <p class="section-lead">
           A selection of websites and interfaces I've built. Each card opens the
-          source code on GitHub.
+          live project.
         </p>
 
         <div class="grid-container">
@@ -788,7 +919,7 @@
       <section id="about" class="reveal">
         <p class="eyebrow">02 &mdash; About</p>
         <h2 class="section-title">Professional Summary</h2>
-        <p class="about-text">
+        <p class="about-text" data-i18n-html="about">
           Results-driven <strong>Front-End Developer</strong> and
           <strong>Management Information Systems (MIS)</strong> student
           specializing in high-performance, responsive web interfaces and
@@ -908,6 +1039,86 @@
         );
         els.forEach(function (e) {
           io.observe(e);
+        });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var AR = {"Open to work":"متاح للعمل","Ebraam Emad": "إبرام عماد", "Front-End Developer": "مطوّر واجهات أمامية", "Cairo, Egypt": "القاهرة، مصر", "10 Public Repositories": "10 مستودعات عامة", "Download CV": "تحميل السيرة الذاتية", "Portfolio 2026": "معرض أعمال 2026", "FRONT-END": "مطوّر واجهات", "DEVELOPER": "أمامية", "& WordPress Specialist": "وخبير ووردبريس", "MIS student crafting high-performance, responsive web interfaces and dynamic WordPress sites with React.js, modern JavaScript and Elementor.": "طالب نظم معلومات إدارية، أبني واجهات ويب سريعة ومتجاوبة ومواقع ووردبريس ديناميكية باستخدام React.js وجافاسكريبت الحديثة وElementor.", "View My Work": "شاهد أعمالي", "01 — Selected Work": "01 — أعمال مختارة", "Projects": "المشاريع", "A selection of websites and interfaces I've built. Each card opens the live project.": "مجموعة من المواقع والواجهات التي بنيتها. كل بطاقة تفتح المشروع مباشرة.", "Landing page for a coffee house with a popular menu section and client reviews.": "صفحة هبوط لمقهى مع قسم للقائمة الأكثر طلبًا وآراء العملاء.", "Multi-section website with articles, a gallery and a features showcase.": "موقع متعدد الأقسام يضم مقالات ومعرض صور وعرضًا للمميزات.", "Sleek agency-style landing page with interactive navigation and a responsive layout.": "صفحة هبوط أنيقة بأسلوب الوكالات مع تنقّل تفاعلي وتصميم متجاوب.", "Coffee shop landing page highlighting easy ordering, specialty roasts and delivery.": "صفحة هبوط لمحل قهوة تُبرز سهولة الطلب والتحميصات المميزة والتوصيل.", "A personal digital business card with a clean, modern look.": "بطاقة أعمال رقمية شخصية بمظهر نظيف وعصري.", "Educational web portal for a servant-training school, with multiple pages and an Arabic RTL interface.": "بوابة تعليمية لمدرسة إعداد الخدام، متعددة الصفحات وبواجهة عربية RTL.", "Responsive": "متجاوب", "View all repositories on GitHub": "شاهد كل المستودعات على GitHub", "02 — About": "02 — نبذة عني", "Professional Summary": "الملخص المهني", "03 — Skills": "03 — المهارات", "Tools & Technologies": "الأدوات والتقنيات", "Front-End Development": "تطوير الواجهات الأمامية", "CMS & Web Design": "أنظمة إدارة المحتوى وتصميم الويب", "AI & Developer Tools": "الذكاء الاصطناعي وأدوات التطوير", "MIS & Systems": "نظم المعلومات والأنظمة", "Responsive Design": "التصميم المتجاوب", "Theme Customization": "تخصيص القوالب", "Site Speed Optimization": "تحسين سرعة المواقع", "AI-Assisted Coding": "البرمجة بمساعدة الذكاء الاصطناعي", "Prompt Engineering": "هندسة الأوامر", "Systems Analysis": "تحليل النظم", "UI/UX Workflow Design": "تصميم مسارات UI/UX", "Enterprise Info Systems": "نظم معلومات المؤسسات", "Bachelor of Management Information Systems (MIS)": "بكالوريوس نظم المعلومات الإدارية (MIS)", "University Student · Egypt — Object-Oriented Programming (C++), Enterprise Information Systems, Operations Research, Project Management, E-Business Infrastructure.": "طالب جامعي · مصر — البرمجة كائنية التوجه (C++)، نظم معلومات المؤسسات، بحوث العمليات، إدارة المشاريع، البنية التحتية للتجارة الإلكترونية.", "04 — Contact": "04 — تواصل", "Let's build something great": "لنبنِ شيئًا رائعًا", "Have a project in mind or want to work together? Get in touch, I'd love to hear about it.": "هل لديك مشروع في بالك أو تريد التعاون؟ تواصل معي وسيسعدني أن أسمع عنه.", "Email Me": "راسلني", "WhatsApp": "واتساب", "© 2026 Ebraam Emad. All rights reserved.": "© 2026 إبرام عماد. جميع الحقوق محفوظة.", "Front-End Developer & WordPress Specialist": "مطوّر واجهات أمامية وخبير ووردبريس"};
+        var ABOUT_AR = "مطوّر <strong>واجهات أمامية</strong> وطالب <strong>نظم المعلومات الإدارية (MIS)</strong> متخصص في بناء واجهات ويب سريعة ومتجاوبة ومواقع ووردبريس ديناميكية. متمكّن من React.js وجافاسكريبت الحديثة ومكتبات المكوّنات وتصميم مواقع Elementor المخصصة، وأستخدم <strong>أدوات الذكاء الاصطناعي وهندسة الأوامر</strong> لتسريع عملي وكتابة كود نظيف وقابل للصيانة.";
+        var root = document.documentElement;
+        var save = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+        var metaTheme = document.querySelector('meta[name="theme-color"]');
+        var EN_TITLE = document.title;
+        var nodes = [];
+        var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+          acceptNode: function (n) {
+            var p = n.parentNode;
+            if (!p || /^(SCRIPT|STYLE)$/.test(p.nodeName) || p.closest(".controls, [data-i18n-html]"))
+              return NodeFilter.FILTER_REJECT;
+            var k = n.nodeValue.replace(/\s+/g, " ").trim();
+            return Object.prototype.hasOwnProperty.call(AR, k) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+          },
+        });
+        var n;
+        while ((n = w.nextNode())) nodes.push({ n: n, en: n.nodeValue, k: n.nodeValue.replace(/\s+/g, " ").trim() });
+        var about = document.querySelector("[data-i18n-html]");
+        var ABOUT_EN = about ? about.innerHTML : "";
+
+        function setLang(l) {
+          root.lang = l;
+          root.dir = l === "ar" ? "rtl" : "ltr";
+          nodes.forEach(function (o) {
+            if (l === "ar") {
+              var lead = o.en.match(/^\s*/)[0], trail = o.en.match(/\s*$/)[0];
+              o.n.nodeValue = lead + AR[o.k] + trail;
+            } else o.n.nodeValue = o.en;
+          });
+          if (about) about.innerHTML = l === "ar" ? ABOUT_AR : ABOUT_EN;
+          document.title = l === "ar" ? "إبرام عماد | مطوّر واجهات أمامية وخبير ووردبريس" : EN_TITLE;
+          var lb = document.getElementById("langBtn");
+          lb.textContent = l === "ar" ? "English" : "عربي";
+          lb.setAttribute("aria-label", l === "ar" ? "Switch to English" : "التبديل إلى العربية");
+          setTheme(root.getAttribute("data-theme") || "dark", true);
+          save("lang", l);
+        }
+
+        function setTheme(t, silent) {
+          root.setAttribute("data-theme", t);
+          var ar = root.lang === "ar";
+          document.getElementById("themeIcon").className = "fas " + (t === "dark" ? "fa-sun" : "fa-moon");
+          document.getElementById("themeLabel").textContent = t === "dark" ? (ar ? "فاتح" : "Light") : (ar ? "داكن" : "Dark");
+          document.getElementById("themeBtn").setAttribute("aria-label", t === "dark" ? (ar ? "الوضع الفاتح" : "Switch to light mode") : (ar ? "الوضع الداكن" : "Switch to dark mode"));
+          if (metaTheme) metaTheme.setAttribute("content", t === "dark" ? "#050505" : "#f5f6f4");
+          if (!silent) save("theme", t);
+        }
+
+        document.getElementById("themeBtn").addEventListener("click", function () {
+          setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+        });
+        document.getElementById("langBtn").addEventListener("click", function () {
+          setLang(root.lang === "ar" ? "en" : "ar");
+        });
+        setLang(root.lang === "ar" ? "ar" : "en");
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var bar = document.getElementById("progress");
+        function update() {
+          var max = document.documentElement.scrollHeight - innerHeight;
+          bar.style.transform = "scaleX(" + (max > 0 ? scrollY / max : 0) + ")";
+        }
+        addEventListener("scroll", update, { passive: true });
+        update();
+        document.querySelectorAll("a.project-card, .skill-card").forEach(function (c) {
+          c.addEventListener("pointermove", function (e) {
+            var r = c.getBoundingClientRect();
+            c.style.setProperty("--mx", e.clientX - r.left + "px");
+            c.style.setProperty("--my", e.clientY - r.top + "px");
+          });
         });
       })();
     </script>
